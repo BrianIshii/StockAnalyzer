@@ -60,6 +60,29 @@ def normalize_data(df):
     Normalize Data
 
     Arguments:
-    df --(pd.DataFrame) pandas dataframe
+    df -- (pd.DataFrame) pandas dataframe
     """
     return df/ df.ix[0,:]
+def get_bollinger_bands(symbol,values,window,plot):
+    """
+    Get Upper and lower bands
+
+    Arguments:
+    symbol -- (String) stock name i.e. "AAPL"
+    values --(pd.Dataframe) i.e. df['AAPL']
+    window -- (int) how many days i.e. 20
+    plot -- (Bool) plot True or False
+    """
+    rm = pd.rolling_mean(values,window=window)
+    rstd = pd.rolling_std(values,window=window)
+    upper_band = rm + rstd * 2
+    lower_band = rm - rstd * 2
+    if plot is True:
+        ax = values.plot(title="Bollinger Bands", label=symbol)
+        rm.plot(label="Rolling Mean", ax=ax)
+        upper_band.plot(label="Upper-Band", ax=ax)
+        lower_band.plot(label="Lower-Band", ax=ax)
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Price")
+        ax.legend(loc='upper left')
+        plt.show()
