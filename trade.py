@@ -43,7 +43,7 @@ def get_data(symbols, dates):
             df = df.dropna(subset=["SPY"])
     return df
 
-def plot_data(df,title="Stock Prices"):
+def plot_data(df,title="Stock Prices",ylabel="Prices"):
     """
     plots stock prices with labels
 
@@ -52,7 +52,7 @@ def plot_data(df,title="Stock Prices"):
     """
     ax = df.plot(title=title,fontsize=12)
     ax.set_xlabel("Date")
-    ax.set_ylabel("Price")
+    ax.set_ylabel(ylabel)
     plt.show()
 
 def normalize_data(df):
@@ -86,3 +86,14 @@ def get_bollinger_bands(symbol,values,window,plot):
         ax.set_ylabel("Price")
         ax.legend(loc='upper left')
         plt.show()
+def compute_daily_returns(df):
+    """
+    Compute the Daily returns of a stock
+
+    Arguments:
+    df -- (pd.DataFrame) i.e. df['AAPL']
+    """
+    daily_returns = df.copy()
+    daily_returns[1:] = (df[1:]/df[:-1].values)-1
+    daily_returns.ix[0,:] = 0
+    return daily_returns
