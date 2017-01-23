@@ -96,7 +96,7 @@ def compute_daily_returns(df):
     daily_returns = ((df / df.shift(1))-1)
     daily_returns.ix[0,:] = 0
     return daily_returns
-def computer_cumulative_returns(df, start_index, end_index):
+def compute_cumulative_returns(df, start_index, end_index):
     """
     compute the cumulative returns of a stock in a time period
 
