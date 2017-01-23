@@ -96,3 +96,14 @@ def compute_daily_returns(df):
     daily_returns = ((df / df.shift(1))-1)
     daily_returns.ix[0,:] = 0
     return daily_returns
+def computer_cumulative_returns(df, start_index, end_index):
+    """
+    compute the cumulative returns of a stock in a time period
+
+    Arguments:
+    df -- (pd.DataFrame) i.e. df['AAPL']
+    start_index -- (date) starting date of data graphed year-month-day formmat i.e. '2017-01-01'
+    end_index -- (date) ending date of data graphed year-month-day formmat i.e. '2017-01-01'
+    """
+    cumulative_returns = (df.loc[end_index]/df.loc[start_index])-1
+    return cumulative_returns
