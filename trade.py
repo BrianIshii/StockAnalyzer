@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import math
 
 def plot_selected(df, columns, start_index, end_index):
     """
@@ -96,6 +97,28 @@ def compute_daily_returns(df):
     daily_returns = ((df / df.shift(1))-1)
     daily_returns.ix[0,:] = 0
     return daily_returns
+def daily_returns_hist(symbols,dates):
+    """
+    Read stock data (adjusted close) for given symbols from CSV files.
+
+    Arguments:
+    symbols -- (List) list of symbols i.e. ["AAPL","GOOGL"]
+    dates -- (pd.date_range) range of dates called
+    """
+    df = get_data(symbols,dates)
+    daily_returns = compute_daily_returns(df)
+    for symbol in symbols:
+        daily_returns[symbol].hist(bins=20,label = symbol)
+    plt.legend(loc="upper right")
+    if len(symbols) == 1:
+        mean = daily_returns['SPY'].mean()
+        print "mean = " + str(mean)
+        std = daily_returns['SPY'].std()
+        plt.axvline(mean,color='w',linestyle="dashed",linewidth=2)
+        plt.axvline(std,color='r',linestyle="dashed",linewidth=2)
+        plt.axvline(-std,color='r',linestyle="dashed",linewidth=2)
+        print daily_returns.kurtosis()
+    plt.show()
 def compute_cumulative_returns(df, start_index, end_index):
     """
     compute the cumulative returns of a stock in a time period
@@ -107,3 +130,10 @@ def compute_cumulative_returns(df, start_index, end_index):
     """
     cumulative_returns = (df.loc[end_index]/df.loc[start_index])-1
     return cumulative_returns
+def sharpe_ratio(df,symbol,start_index, end_index):
+    d = compute_daily_returns(df)
+    c = compute_cumulative_returns(df,start_index,end_index)
+    mean = d[symbol].mean()
+    std = d[symbol].std()
+    sharpe = math.sqrt(252)*(mean/std)
+    return sharpe,c,mean,std
