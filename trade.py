@@ -87,6 +87,7 @@ def get_bollinger_bands(symbol,values,window,plot):
         ax.set_ylabel("Price")
         ax.legend(loc='upper left')
         plt.show()
+    return rm,upper_band,lower_band
 def compute_daily_returns(df):
     """
     Compute the Daily returns of a stock
@@ -131,6 +132,14 @@ def compute_cumulative_returns(df, start_index, end_index):
     cumulative_returns = (df.loc[end_index]/df.loc[start_index])-1
     return cumulative_returns
 def sharpe_ratio(df,symbol,start_index, end_index):
+    """
+    computes the sharpe ratio returns sharpe, c, mean, and std
+
+    Arguments:
+    df -- (pd.DataFrame) i.e. df['AAPL']
+    start_index -- (date) starting date of data graphed year-month-day formmat i.e. '2017-01-01'
+    end_index -- (date) ending date of data graphed year-month-day formmat i.e. '2017-01-01'
+    """
     d = compute_daily_returns(df)
     c = compute_cumulative_returns(df,start_index,end_index)
     mean = d[symbol].mean()
