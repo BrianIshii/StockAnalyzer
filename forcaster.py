@@ -38,18 +38,12 @@ def main():
     lower_band = lower_band.rename(columns={stock:"lower_band"})
     df = df.join(lower_band)
     df = df.dropna(subset=["rm"])
-    low_price = pd.DataFrame(rm)
-    low_price = low_price.rename(columns={"rm":"BUY"})
-    low_price.ix[:] = 100
-    high_price = pd.DataFrame(rm)
-    high_price = high_price.rename(columns={"rm":"SELL"})
-    high_price.ix[:] = 130
-    #print high_price
-    df = df.join(low_price)
-    df = df.join(high_price)
+    buy_price = 100
+    sell_price = 120
+    df['sell_points'] = (df[stock] >= sell_price).astype(int)
+    df['buy_points'] = (df[stock] <= buy_price).astype(int)
 
-    df['intersect'] = np.where(int(df['lowerband']) ==int(df[stock]), df[stock], 0)
-    print df['intersect']
+    print df['sell_points']
     '''
     #print df
     #print len(df)
@@ -57,8 +51,9 @@ def main():
     if df[stock] == df['lower_band']:
         print df[lower_band]
         #plt.plot([df[index]],[df[lower_band]],"ro")
+    '''
     trade.plot_data(df)
-'''
+
     '''
     new_date = "1"
     while new_date != "0":
