@@ -56,3 +56,4 @@ def download_custom_data(symbols,data_type=[]):
     #webbrowser.open(url,new=2)
 
 update_data("StockData")
+

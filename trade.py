@@ -1,3 +1,8 @@
+'''
+Trade.py is a library to look at stock data
+Written by Brian Ishii 2017
+
+'''
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
