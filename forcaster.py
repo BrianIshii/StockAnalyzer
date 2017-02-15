@@ -4,39 +4,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 import numpy as np
-import updateData
 
-def check_data():
-    now = datetime.datetime.now()
-    today = ("%4s-%2s-%02d" %(now.strftime("%Y"),now.strftime("%m"),int(now.strftime("%d")) - 1))
-    df_check = pd.read_csv(trade.path_to_symbol("SPY"))
-    date = df_check["Date"][0]
-    #print date
-    #print today
-    if date != today:
-        if int(now.strftime('%w')) == 1:
-            print("Data up to date")
-            return
-        else:
-            updateData.update_data("StockData")
-            return
-    else: 
-        print("Data up to date")
-        return
 
 def main():
-    check_data()
+    now = datetime.datetime.now()
+    today = ("%4s-%2s-%02d" %(now.strftime("%Y"),now.strftime("%m"),int(now.strftime("%d")) - 1))
+    start_date = "2015-01-02"
+    trade.check_data(today)
     symbols = ['SPY']
     stock = (raw_input("Which stock do you want to analyze? "))
     symbols.append(stock)
     dates = pd.date_range(start_date,today)
     df = trade.get_data(symbols,dates)
-    '''five_day_future = df.shift(30)
-    five_day_future.ix[0:30] = 0
-    five_day_future = five_day_future.rename(columns={"AAPL":"FDF"})
-    print five_day_future['FDF']
-    df = df.join(five_day_future['FDF'])
-    '''
     sharpe_ratio,cumulative_returns,average_daily_returns,std_daily_returns = trade.sharpe_ratio(df,stock,start_date, today)
     print sharpe_ratio
     print cumulative_returns
@@ -58,24 +37,31 @@ def main():
     df['sell_points'] = (df[stock] >= sell_price).astype(int)
     df['buy_points'] = (df[stock] <= buy_price).astype(int)
 
-    print df['sell_points']
-    '''
-    #print df
-    #print len(df)
-    print df[stock]    #for i in range(len(df)):
-    if df[stock] == df['lower_band']:
-        print df[lower_band]
-        #plt.plot([df[index]],[df[lower_band]],"ro")
-    '''
-    trade.plot_data(df)
+    #trade.plot_data(df)
+    graph_close(df,stock)
 
-    '''
-    new_date = "1"
-    while new_date != "0":
-        new_date = (raw_input("pick a start date"))
-        dates = pd.date_range(new_date,today)
-        scatter_plot(stock,symbols,dates)
-    '''
+def graph_close(df,symbol):
+    past_year = df[symbol][252:]
+    df[symbol].hist(bins=20,label = symbol)
+    past_year.hist(bins=20,label = "Past Year")
+    plt.legend(loc="upper right")
+    past_year_mean = past_year.mean()
+    past_year_std = past_year.std()
+    mean = df[symbol].mean()
+    print "mean = " + str(mean)
+    std = df[symbol].std()
+    print("std = " + str(std))
+    #simplify with func
+    plt.axvline(mean,color='w',linestyle="dashed",linewidth=2)
+    plt.axvline(std + mean,color='r',linestyle="dashed",linewidth=2)
+    plt.axvline(-std + mean,color='r',linestyle="dashed",linewidth=2)
+    plt.axvline(past_year_mean,color='w',linewidth=2)
+    plt.axvline(past_year_std + past_year_mean,color='r',linewidth=2)
+    plt.axvline(-past_year_std + past_year_mean,color='r',linewidth=2)
+    plt.axvline(df[symbol][-1],color='g',linewidth=2)
+    print df.kurtosis()
+    plt.show()
+
 def scatter_plot(symbol,symbols,dates):
     df= trade.get_data(symbols,dates)
     daily_returns = trade.compute_daily_returns(df)
