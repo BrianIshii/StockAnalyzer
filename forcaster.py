@@ -32,13 +32,23 @@ def main():
     lower_band = lower_band.rename(columns={stock:"lower_band"})
     df = df.join(lower_band)
     df = df.dropna(subset=["rm"])
-    buy_price = 100
-    sell_price = 120
-    df['sell_points'] = (df[stock] >= sell_price).astype(int)
-    df['buy_points'] = (df[stock] <= buy_price).astype(int)
-
-    #trade.plot_data(df)
+    add = float(df[stock][0]/1000)
+    df['sell_points'] = (df[stock] >= df["upper_band"]-add).astype(float)
+    df['buy_points'] = (df[stock] <= df["lower_band"]+add).astype(float)
+    '''#volume
+    df_vol = trade.get_data(symbols,dates,"Volume")
+    df_vol = df_vol.rename(columns={stock:"Volume"})
+    df_vol = (df_vol/1000000)
+    df = df.join(df_vol["Volume"])
+    '''
+    
+    plt.figure(1)
+    plt.subplot(331)
     graph_close(df,stock)
+    plt.subplot(332)
+    buy_sell(df,stock)
+
+    plt.show()
 
 def graph_close(df,symbol):
     past_year = df[symbol][252:]
@@ -58,9 +68,19 @@ def graph_close(df,symbol):
     plt.axvline(past_year_mean,color='w',linewidth=2)
     plt.axvline(past_year_std + past_year_mean,color='r',linewidth=2)
     plt.axvline(-past_year_std + past_year_mean,color='r',linewidth=2)
-    plt.axvline(df[symbol][-1],color='g',linewidth=2)
+    plt.axvline(df[symbol][-1],color='black',linewidth=2)
     print df.kurtosis()
-    plt.show()
+
+def buy_sell(df,symbol):
+    df['sell_points'][df['sell_points'] == 1] = df[symbol]
+    df['sell_points'][df['sell_points'] == 0] = "NaN"
+    df['buy_points'][df['buy_points'] == 1] = df[symbol]
+    df['buy_points'][df['buy_points'] == 0] = "NaN"
+    plt.plot(df['sell_points'],'go')
+    plt.plot(df["buy_points"],'ro')
+    plt.plot(df[symbol])
+    plt.plot(df['lower_band'],'r')
+    plt.plot(df['upper_band'],'g')
 
 def scatter_plot(symbol,symbols,dates):
     df= trade.get_data(symbols,dates)

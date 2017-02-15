@@ -74,4 +74,3 @@ def download_custom_data(symbols,data_type=[]):
     #do not run yet
     #webbrowser.open(url,new=2)
 
-
