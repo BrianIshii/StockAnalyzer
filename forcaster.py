@@ -4,13 +4,28 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 import numpy as np
+import updateData
 
-now = datetime.datetime.now()
-today = ("{}-{}-{}".format(now.strftime("%Y"),now.strftime("%m"),int(now.strftime("%d")) - 1))
-today = "2017-01-24"
-start_date = ("{}-{}-{}".format(int(now.strftime("%Y")) - 1,now.strftime("%m"),now.strftime("%d")))
-start_date = "2012-08-01"
+def check_data():
+    now = datetime.datetime.now()
+    today = ("%4s-%2s-%02d" %(now.strftime("%Y"),now.strftime("%m"),int(now.strftime("%d")) - 1))
+    df_check = pd.read_csv(trade.path_to_symbol("SPY"))
+    date = df_check["Date"][0]
+    #print date
+    #print today
+    if date != today:
+        if int(now.strftime('%w')) == 1:
+            print("Data up to date")
+            return
+        else:
+            updateData.update_data("StockData")
+            return
+    else: 
+        print("Data up to date")
+        return
+
 def main():
+    check_data()
     symbols = ['SPY']
     stock = (raw_input("Which stock do you want to analyze? "))
     symbols.append(stock)
