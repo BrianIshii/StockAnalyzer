@@ -7,6 +7,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+import updateData
 
 def plot_selected(df, columns, start_index, end_index):
     """
@@ -151,3 +152,23 @@ def sharpe_ratio(df,symbol,start_index, end_index):
     std = d[symbol].std()
     sharpe = math.sqrt(252)*(mean/std)
     return sharpe,c,mean,std
+
+def check_data(today):
+    """
+    Checks Date and updates the CSV data files if necessary
+
+    Arguments:
+    today -- (String) string in date form i.e. '2017-01-01'
+    """
+    df_check = pd.read_csv(path_to_symbol("SPY"))
+    date = df_check["Date"][0]
+    if date != today:
+        if int(now.strftime('%w')) == 1:
+            print("Data up to date")
+            return
+        else:
+            updateData.update_data("StockData")
+            return
+    else: 
+        print("Data up to date")
+        return
