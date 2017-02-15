@@ -61,7 +61,7 @@ def download_data(symbol,folder):
 def download_custom_data(symbols,data_type=[]):
     """
     download custom data from yahoo finance
-
+    
     Arguments:
     symbols -- (List) i.e. ['AAPL','SPY']
     data_type -- (List) i.e. ['o','p']
@@ -71,7 +71,7 @@ def download_custom_data(symbols,data_type=[]):
         data +=data_type[i]
         url = "http://finance.yahoo.com/d/quotes.csv?s=" + symbols + "&f=" + data + ""
     print url
+    #do not run yet
     #webbrowser.open(url,new=2)
 
-#update_data("StockData")
 
