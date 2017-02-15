@@ -30,21 +30,22 @@ def path_to_symbol(symbol, base_dir="StockData"):
     """
     return os.path.join(base_dir, "{}.csv".format(str(symbol)))
 
-def get_data(symbols, dates):
+def get_data(symbols, dates, col="Adj Close"):
     """
     Read stock data (adjusted close) for given symbols from CSV files.
 
     Arguments:
     symbols -- (List) list of symbols i.e. ["AAPL","GOOGL"]
     dates -- (pd.date_range) range of dates called
+    col -- (String) column name of data requested i.e. 'Volume'
     """
     df = pd.DataFrame(index=dates)
     if 'SPY' not in symbols:  # add SPY for reference, if absent
         symbols.insert(0, 'SPY')
 
     for symbol in symbols:
-        df_temp = pd.read_csv(path_to_symbol(symbol),index_col="Date",usecols= ["Date","Adj Close"],parse_dates=True,na_values = ['nan'])
-        df_temp = df_temp.rename(columns={"Adj Close":symbol})
+        df_temp = pd.read_csv(path_to_symbol(symbol),index_col="Date",usecols= ["Date",col],parse_dates=True,na_values = ['nan'])
+        df_temp = df_temp.rename(columns={col:symbol})
         df = df.join(df_temp)
         if symbol == 'SPY':
             df = df.dropna(subset=["SPY"])
