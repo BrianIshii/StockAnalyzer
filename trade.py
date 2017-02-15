@@ -20,7 +20,7 @@ def plot_selected(df, columns, start_index, end_index):
     """
     plot_data(df.ix[start_index:end_index,columns],title="Selected Data ({})-({})".format(start_index,end_index))
 
-def symbol_to_path(symbol, base_dir="StockData"):
+def path_to_symbol(symbol, base_dir="StockData"):
     """
     returns the CSV file path given the ticker symbol
 
@@ -42,7 +42,7 @@ def get_data(symbols, dates):
         symbols.insert(0, 'SPY')
 
     for symbol in symbols:
-        df_temp = pd.read_csv(symbol_to_path(symbol),index_col="Date",usecols= ["Date","Adj Close"],parse_dates=True,na_values = ['nan'])
+        df_temp = pd.read_csv(path_to_symbol(symbol),index_col="Date",usecols= ["Date","Adj Close"],parse_dates=True,na_values = ['nan'])
         df_temp = df_temp.rename(columns={"Adj Close":symbol})
         df = df.join(df_temp)
         if symbol == 'SPY':
