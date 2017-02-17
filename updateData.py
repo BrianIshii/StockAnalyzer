@@ -49,7 +49,8 @@ def download_data(symbol,folder):
     src_file = os.path.abspath("../../Downloads/"+new_file)
     dst_dir = os.path.abspath('StockData')
     dst_file = dst_dir +"/{}.csv".format(symbol)
-    print("Downloading {}.csv. . . .".format(symbol),end="")
+    print "Downloading {}.csv. . . .".format(symbol),
+    #print("Downloading {}.csv. . . .".format(symbol),end="") # for python3
     while os.path.isfile(src_file) is False:
         continue
     time.sleep(0.1)

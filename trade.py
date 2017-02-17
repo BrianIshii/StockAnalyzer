@@ -154,7 +154,7 @@ def sharpe_ratio(df,symbol,start_index, end_index):
     sharpe = math.sqrt(252)*(mean/std)
     return sharpe,c,mean,std
 
-def check_data(today):
+def check_data(today,now):
     """
     Checks Date and updates the CSV data files if necessary
 
