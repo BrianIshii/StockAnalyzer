@@ -49,15 +49,15 @@ def download_data(symbol,folder):
     src_file = os.path.abspath("../../Downloads/"+new_file)
     dst_dir = os.path.abspath('StockData')
     dst_file = dst_dir +"/{}.csv".format(symbol)
-    print"Downloading {}.csv. . . .".format(symbol),
+    print("Downloading {}.csv. . . .".format(symbol),end="")
     while os.path.isfile(src_file) is False:
         continue
     time.sleep(0.1)
     if os.path.isfile(src_file) is True:
         os.rename(src_file,dst_file)
-        print"Done"
+        print("Done")
     else:
-        print"Error"
+        print("Error")
 def download_custom_data(symbols,data_type=[]):
     """
     download custom data from yahoo finance
@@ -70,7 +70,7 @@ def download_custom_data(symbols,data_type=[]):
     for i in range(len(data_type)):
         data +=data_type[i]
         url = "http://finance.yahoo.com/d/quotes.csv?s=" + symbols + "&f=" + data + ""
-    print url
+    print(url)
     #do not run yet
     #webbrowser.open(url,new=2)
 
