@@ -5,7 +5,7 @@ Written by Brian Ishii 2017
 '''
 import os
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import math
 
 def plot_selected(df, columns, start_index, end_index):
@@ -118,12 +118,12 @@ def daily_returns_hist(symbols,dates):
     plt.legend(loc="upper right")
     if len(symbols) == 1:
         mean = daily_returns['SPY'].mean()
-        print "mean = " + str(mean)
+        print("mean = " + str(mean))
         std = daily_returns['SPY'].std()
         plt.axvline(mean,color='w',linestyle="dashed",linewidth=2)
         plt.axvline(std,color='r',linestyle="dashed",linewidth=2)
         plt.axvline(-std,color='r',linestyle="dashed",linewidth=2)
-        print daily_returns.kurtosis()
+        print(daily_returns.kurtosis())
     plt.show()
 def compute_cumulative_returns(df, start_index, end_index):
     """

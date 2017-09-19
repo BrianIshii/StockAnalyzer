@@ -1,11 +1,9 @@
-# Forcaster
 import datetime
 
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 
-import trade
+import Analysis.trade as trade
 
 global dates
 
@@ -15,21 +13,14 @@ def main():
     symbols = ['SPY']
 
     #trade.check_data()
-    dates = trade.get_dates(start_date)
+    #dates = trade.get_dates(start_date)
     
-    symbol = (raw_input("Which stock do you want to analyze? "))
-    symbols.append(symbol) 
+    dates = pd.date_range(start_date, "2015-02-02")
+    symbols.append("AAPL") 
     df = trade.get_data(symbols,dates)
     
-    #print(df)
-    plt.figure(1)
-    plt.subplot(311)
-    graph_close(df,symbol)
-    plt.subplot(312)
-    buy_sell(df,symbol)
-    plt.subplot(313)
-    volume(df,symbol)
-    plt.show()
+    print(df)
+    
 
 def graph_close(df,symbol):
     past_year = df[symbol][252:]
