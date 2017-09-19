@@ -20,7 +20,7 @@ def plot_selected(df, columns, start_index, end_index):
     """
     plot_data(df.ix[start_index:end_index,columns],title="Selected Data ({})-({})".format(start_index,end_index))
 
-def symbol_to_path(symbol, base_dir="StockData"):
+def symbol_to_path(symbol, base_dir="Data"):
     """
     returns the CSV file path given the ticker symbol
 
