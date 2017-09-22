@@ -5,19 +5,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-import trade
+import Analysis.trade as trade
 
 global dates
 
 def main():
     global dates
-    start_date = "2015-01-02"
+    dates = "2015-01-02"
     symbols = ['SPY']
 
     #trade.check_data()
-    dates = trade.get_dates(start_date)
+    dates = pd.date_range(start="2015-01-02", end="2016-01-02")
+
     
-    symbol = (raw_input("Which stock do you want to analyze? "))
+    symbol = (input("Which stock do you want to analyze? "))
     symbols.append(symbol) 
     df = trade.get_data(symbols,dates)
     

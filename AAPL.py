@@ -2,6 +2,7 @@ import datetime
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 import Analysis.trade as trade
 
@@ -12,36 +13,38 @@ def main():
     start_date = "2015-01-02"
     symbols = ['SPY']
 
-    #trade.check_data()
-    #dates = trade.get_dates(start_date)
-    
-    dates = pd.date_range(start_date, "2015-02-02")
+    dates = pd.date_range("2015-01-02", "2015-02-02")
     symbols.append("AAPL") 
     df = trade.get_data(symbols,dates)
     
     print(df)
-    
+    graph_close(df, "AAPL")   
 
+# 
 def graph_close(df,symbol):
-    past_year = df[symbol][252:]
-    df[symbol].hist(bins=20,label = symbol)
-    past_year.hist(bins=20,label = "Past Year")
-    plt.legend(loc="upper right")
-    past_year_mean = past_year.mean()
-    past_year_std = past_year.std()
-    mean = df[symbol].mean()
-    print("mean = " + str(mean))
-    std = df[symbol].std()
-    print("std = " + str(std))
+    #past_year = df[symbol][252:]
+    past_year = df[symbol][5:]
+    past_year
+    print(type(past_year[0]))
+    #need to change it to float
+    #df[symbol].hist(bins=2,label = symbol)
+    #past_year.hist(bins=2,label = "Past Year")
+    #plt.legend(loc="upper right")
+    #past_year_mean = past_year.mean()
+    #past_year_std = past_year.std()
+    #mean = df[symbol].mean()
+    #print("mean = " + str(mean))
+    #std = df[symbol].std()
+    #print("std = " + str(std))
     #simplify with func
-    plt.axvline(mean,color='w',linestyle="dashed",linewidth=2)
-    plt.axvline(std + mean,color='r',linestyle="dashed",linewidth=2)
-    plt.axvline(-std + mean,color='r',linestyle="dashed",linewidth=2)
-    plt.axvline(past_year_mean,color='w',linewidth=2)
-    plt.axvline(past_year_std + past_year_mean,color='r',linewidth=2)
-    plt.axvline(-past_year_std + past_year_mean,color='r',linewidth=2)
-    plt.axvline(df[symbol][-1],color='black',linewidth=2)
-    print(df.kurtosis())
+    #plt.axvline(mean,color='w',linestyle="dashed",linewidth=2)
+    #plt.axvline(std + mean,color='r',linestyle="dashed",linewidth=2)
+    #plt.axvline(-std + mean,color='r',linestyle="dashed",linewidth=2)
+    #plt.axvline(past_year_mean,color='w',linewidth=2)
+    #plt.axvline(past_year_std + past_year_mean,color='r',linewidth=2)
+    #plt.axvline(-past_year_std + past_year_mean,color='r',linewidth=2)
+    #plt.axvline(df[symbol][-1],color='black',linewidth=2)
+    #print(df.kurtosis())
 
 def buy_sell(df,symbol):
     rm,upper_band,lower_band = trade.get_bollinger_bands(symbol,df[symbol],20,False)

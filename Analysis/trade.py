@@ -5,8 +5,9 @@ Written by Brian Ishii 2017
 '''
 import os
 import pandas as pd
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import math
+#import updateData
 
 def plot_selected(df, columns, start_index, end_index):
     """
@@ -20,7 +21,7 @@ def plot_selected(df, columns, start_index, end_index):
     """
     plot_data(df.ix[start_index:end_index,columns],title="Selected Data ({})-({})".format(start_index,end_index))
 
-def symbol_to_path(symbol, base_dir="Data"):
+def path_to_symbol(symbol, base_dir="Data"):
     """
     returns the CSV file path given the ticker symbol
 
@@ -29,21 +30,22 @@ def symbol_to_path(symbol, base_dir="Data"):
     """
     return os.path.join(base_dir, "{}.csv".format(str(symbol)))
 
-def get_data(symbols, dates):
+def get_data(symbols, dates, col="Adj Close"):
     """
     Read stock data (adjusted close) for given symbols from CSV files.
 
     Arguments:
     symbols -- (List) list of symbols i.e. ["AAPL","GOOGL"]
     dates -- (pd.date_range) range of dates called
+    col -- (String) column name of data requested i.e. 'Volume'
     """
     df = pd.DataFrame(index=dates)
     if 'SPY' not in symbols:  # add SPY for reference, if absent
         symbols.insert(0, 'SPY')
 
     for symbol in symbols:
-        df_temp = pd.read_csv(symbol_to_path(symbol),index_col="Date",usecols= ["Date","Adj Close"],parse_dates=True,na_values = ['nan'])
-        df_temp = df_temp.rename(columns={"Adj Close":symbol})
+        df_temp = pd.read_csv(path_to_symbol(symbol),index_col="Date",usecols= ["Date",col],parse_dates=True,na_values = ['nan'])
+        df_temp = df_temp.rename(columns={col:symbol})
         df = df.join(df_temp)
         if symbol == 'SPY':
             df = df.dropna(subset=["SPY"])
@@ -151,3 +153,23 @@ def sharpe_ratio(df,symbol,start_index, end_index):
     std = d[symbol].std()
     sharpe = math.sqrt(252)*(mean/std)
     return sharpe,c,mean,std
+
+def check_data(today,now):
+    """
+    Checks Date and updates the CSV data files if necessary
+
+    Arguments:
+    today -- (String) string in date form i.e. '2017-01-01'
+    """
+    df_check = pd.read_csv(path_to_symbol("SPY"))
+    date = df_check["Date"][0]
+    if date != today:
+        if int(now.strftime('%w')) == 1:
+            print("Data up to date")
+            return
+        else:
+            updateData.update_data("StockData")
+            return
+    else: 
+        print("Data up to date")
+        return
