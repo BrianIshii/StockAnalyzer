@@ -16,7 +16,7 @@ def main():
     dates = pd.date_range("2015-01-02", "2015-02-02")
     symbols.append("AAPL") 
     df = trade.get_data(symbols,dates)
-    
+    print(str(df)) 
     print(df)
     graph_close(df, "AAPL")   
 
