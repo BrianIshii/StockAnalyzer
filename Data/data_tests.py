@@ -37,6 +37,8 @@ class DataTests(unittest.TestCase):
         self.assertEqual(
                 str(self.test.get_dates("2015-01-02", "2015-01-06")),
                 dates)
+    def test_get_bollinger_bands_error(self):
+        self.assertRaises(IndexError, self.test.get_bollinger_bands, "AAPL")
 
     def test_get_bollinger_bands(self):
         temp = Data("2015-01-01", "2015-01-15")
@@ -77,5 +79,6 @@ class DataTests(unittest.TestCase):
         self.assertEqual(str(test_rm), rm)
         self.assertEqual(str(test_ub), ub)
         self.assertEqual(str(test_lb), lb)
+
 if __name__ == '__main__':
     unittest.main()
