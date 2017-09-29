@@ -1,14 +1,16 @@
-'''
-data.py is a library to look at stock data
+#!/usr/bin/env python3
+"""
+data.py is an object to look at stock data
 
 Brian Ishii 2017
-'''
+"""
 
 import os
 import pandas as pd
 import json
 
 class Data:
+
     def __init__(self, start_date, end_date, data_type="Adj Close"):
         self.symbols = ["SPY"]
         self.dates = self.get_dates(start_date, end_date)
@@ -77,4 +79,11 @@ class Data:
         upper_band = rolling_mean + rolling_std * 2
         lower_band = rolling_mean - rolling_std * 2
         return rolling_mean, upper_band, lower_band
+
+    def add_stock(self, symbol):
+        """appends the stock symbol to the symbols list
         
+        Keyword arguments:
+        symbol: (String) stock symbol i.e. "AAPL" 
+        """
+        self.symbols.append(symbol)
