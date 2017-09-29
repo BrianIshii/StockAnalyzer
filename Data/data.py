@@ -6,7 +6,7 @@ Brian Ishii 2017
 
 import os
 import pandas as pd
-import math
+import json
 
 class Data:
     def __init__(self, start_date, end_date, data_type="Adj Close"):

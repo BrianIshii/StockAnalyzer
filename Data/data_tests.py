@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from data import *
 class DataTests(unittest.TestCase):
@@ -6,14 +7,15 @@ class DataTests(unittest.TestCase):
     def setUpClass(cls):
         test = Data("2015-01-02", "2015-01-06")
         cls.test = test
+        cls.cwd = os.getcwd()
 
     def test_path_to_symbol_aapl(self):
         self.assertEqual(self.test.path_to_symbol("AAPL"),
-               "/Users/brianishii/Desktop/StockAnalyzer/Data/AAPL.csv")
+               self.cwd + "/AAPL.csv")
 
     def test_path_to_symbol_spy(self):
         self.assertEqual(self.test.path_to_symbol("SPY"),
-               "/Users/brianishii/Desktop/StockAnalyzer/Data/SPY.csv")
+               self.cwd + "/SPY.csv")
 
     def test_get_data(self):
         output = ("" 
@@ -37,6 +39,7 @@ class DataTests(unittest.TestCase):
         self.assertEqual(
                 str(self.test.get_dates("2015-01-02", "2015-01-06")),
                 dates)
+
     def test_get_bollinger_bands_error(self):
         self.assertRaises(IndexError, self.test.get_bollinger_bands, "AAPL")
 
