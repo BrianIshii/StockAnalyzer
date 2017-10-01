@@ -1,12 +1,13 @@
 { "Stocks": {
-   "Tech": [
-      { "symbol": "AAPL",
+   "Tech": {
+      "Apple": {
+        "symbol": "AAPL",
         "price": 150,
         "buy_price": 120,
         "sell_price": 170,
         "52_week_high": 170,
         "52_week_low": 130
+         }
       }
-   ]
    }
 }
